@@ -41,7 +41,6 @@ public class BinarySearchLibrary {
 	 * Return -1 if there is no such object in list.               
 	 */
 	public static <T> int firstIndex(List<T> list, T target, Comparator<T> comp) {
-		
 		int low = -1;
 		int high = list.size()-1;
 		
@@ -57,9 +56,8 @@ public class BinarySearchLibrary {
 		}
 		if (comp.compare(list.get(high), target) == 0) {
 			return high;
-		} else {
-			return -1;
 		}
+		return -1;
 	}
 
 	 /**                                                                                          
@@ -81,22 +79,17 @@ public class BinarySearchLibrary {
 		int high = list.size();
 		while (low + 1 != high) {
 			int mid = (low + high) / 2;
-			//System.out.println("Compare: " + target + " - " + list.get(mid));
 			if (comp.compare(list.get(mid), target) > 0) {
-				//System.out.println("target < mid");
 				high = mid;
 			} else {
-				//System.out.println("target > mid");
 				low = mid;
-
 			}
 		}
-		///System.out.println("Final: " + high);
 		if (comp.compare(list.get(low), target) == 0) {
 			return low;
-		} else {
-			return -1;
 		}
+		return -1;
+
 	}
 	
 }

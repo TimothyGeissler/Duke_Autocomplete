@@ -107,10 +107,42 @@ public class BinarySearchAutocomplete implements Autocompletor {
 		if (first == -1) {               // prefix not found
 			return new ArrayList<>();
 		}
+		PriorityQueue<Term> pq = new PriorityQueue<Term>(Comparator.comparing(Term::getWeight));
+		for (int i = first; i <= last; i++) {
+			Term t = myTerms[i];
+			if (!t.getWord().startsWith(prefix))
+				continue;
+			if (pq.size() < k) {
+				pq.add(t);
+			} else if (pq.peek().getWeight() < t.getWeight()) {
+				pq.remove();
+				pq.add(t);
+			}
+		}
 
-		// write code here for P5 assignment
+		int numResults = Math.min(k, pq.size());
+		LinkedList<Term> ret = new LinkedList<>();
+		for (int i = 0; i < numResults; i++) {
+			ret.addFirst(pq.remove());
+		}
+		return ret;
 
-		return null;
+		/*
+		//O(logN)
+		Term prefixTerm = new Term(prefix, 0);
+		//Convert from String [] to ArrayList<String>
+		ArrayList<Term> arrTerms = new ArrayList<>();
+		Collections.addAll(arrTerms, myTerms);
+		int firstIndex = BinarySearchLibrary.firstIndex(arrTerms, prefixTerm, Comparator.naturalOrder());
+		int lastIndex = BinarySearchLibrary.firstIndex(arrTerms, prefixTerm, Comparator.naturalOrder());
+		//O(MlogN)
+		List<Term> subList = arrTerms.subList(firstIndex, lastIndex);
+		PriorityQueue<Term> pq = new PriorityQueue<>(k, Comparator.naturalOrder());
+		pq.addAll(subList);
+		//O(k)
+		List<Term> result = null; //Convert back to List
+		result.addAll(pq);
+		return result;*/
 	
 	}
 
